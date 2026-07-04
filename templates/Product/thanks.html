@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav_home %} active {% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-body text-center p-5">
+
+                    <div style="font-size:80px;">
+                        🎉
+                    </div>
+
+                    <h1 class="text-success font-weight-bold mt-3">
+                        Order Confirmed!
+                    </h1>
+
+                    <p class="lead mt-3">
+                        Thank you for choosing
+                        <strong>HealthBite</strong>.
+                    </p>
+
+                    <p>
+                        Your healthy food order has been placed successfully.
+                    </p>
+
+                    <hr>
+
+                    <div class="row text-center">
+
+                        <div class="col-md-4">
+
+                            <h4>🚚</h4>
+
+                            <h6>Fast Delivery</h6>
+
+                            <small>
+                                30 - 45 Minutes
+                            </small>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <h4>🍽</h4>
+
+                            <h6>Fresh Food</h6>
+
+                            <small>
+                                Prepared after your order
+                            </small>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <h4>💳</h4>
+
+                            <h6>Payment</h6>
+
+                            <small>
+                                Cash on Delivery
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <a href="/home/"
+                       class="btn btn-success btn-lg">
+
+                        🍽 Continue Shopping
+
+                    </a>
+
+                    <a href="{% url 'Product_order_list' %}" class="btn btn-primary">
+                        📦 My Orders
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

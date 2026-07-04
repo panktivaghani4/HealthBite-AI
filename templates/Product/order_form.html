@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row">
+
+        <!-- Product Details -->
+
+        <div class="col-md-5">
+
+            <div class="card shadow-lg border-0">
+
+                {% if product.image %}
+                    <img src="{{ product.image.url }}"
+                         class="card-img-top"
+                         style="height:350px;object-fit:cover;">
+                {% else %}
+                    <img src="{% static 'images/no-image.png' %}"
+                         class="card-img-top"
+                         style="height:350px;object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body">
+
+                    <h3 class="font-weight-bold">
+                        {{ product.name }}
+                    </h3>
+
+                    <p class="text-muted">
+                        {{ product.description|truncatewords:20 }}
+                    </p>
+
+                    <hr>
+
+                    <h3 class="text-success">
+                        ₹ {{ product.price }}
+                    </h3>
+
+                    <table class="table table-bordered mt-3">
+
+                        <tr>
+                            <th>🔥 Calories</th>
+                            <td>{{ product.calories }} kcal</td>
+                        </tr>
+
+                        <tr>
+                            <th>🥩 Protein</th>
+                            <td>{{ product.protein }} g</td>
+                        </tr>
+
+                        <tr>
+                            <th>🍚 Carbs</th>
+                            <td>{{ product.carbs }} g</td>
+                        </tr>
+
+                        <tr>
+                            <th>🥑 Fat</th>
+                            <td>{{ product.fat }} g</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Order Form -->
+
+        <div class="col-md-7">
+
+            <div class="card shadow-lg border-0">
+
+                <div class="card-header bg-success text-white">
+
+                    <h3 class="mb-0">
+                        🛒 Place Your Order
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <!-- Order Summary -->
+
+                        <div class="alert alert-success">
+
+                            <h5>🧾 Order Summary</h5>
+
+                            <hr>
+
+                            <p>
+                                <strong>Product :</strong>
+                                {{ product.name }}
+                            </p>
+
+                            <p>
+                                <strong>Price :</strong>
+                                ₹ {{ product.price }}
+                            </p>
+                            <hr>
+
+                             <h5 class="text-success">
+
+                                 Total Price :
+                                  ₹ <span id="totalPrice">{{ product.price }}</span>
+
+                            </h5>
+
+                            <p class="mb-0 text-success">
+                                Fill your details below and confirm your order.
+                            </p>
+
+                        </div>
+
+                        {{ form|crispy }}
+
+                        <br>
+
+                        <button
+                            class="btn btn-success btn-lg btn-block"
+                            type="submit">
+
+                            ✅ Confirm Order
+
+                        </button>
+
+                        <a href="/home/"
+                           class="btn btn-outline-secondary btn-block mt-2">
+
+                            ← Continue Shopping
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const qty = document.getElementById("id_count");
+
+    const total = document.getElementById("totalPrice");
+
+    const price = {{ product.price }};
+
+    function updateTotal(){
+
+        let quantity = parseInt(qty.value);
+
+        if(isNaN(quantity) || quantity < 1){
+
+            quantity = 1;
+
+        }
+
+        total.innerHTML = quantity * price;
+
+    }
+
+    updateTotal();
+
+    qty.addEventListener("keyup", updateTotal);
+
+    qty.addEventListener("change", updateTotal);
+
+});
+
+</script>
+{% endblock %}

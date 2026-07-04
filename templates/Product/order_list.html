@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav_order %} active {% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+
+        <h2 class="font-weight-bold">
+            📦 My Orders
+        </h2>
+
+        <p class="text-muted">
+            View all your healthy food orders.
+        </p>
+
+    </div>
+
+    {% if object_list %}
+
+    <div class="row">
+
+        {% for object in object_list %}
+
+        <div class="col-lg-6 mb-4">
+
+            <div class="card shadow-lg border-0 h-100">
+
+                {% if object.product.image %}
+
+                    <img src="{{ object.product.image.url }}"
+                         class="card-img-top"
+                         style="height:250px;object-fit:cover;">
+
+                {% else %}
+
+                    <img src="{% static 'images/no-image.png' %}"
+                         class="card-img-top"
+                         style="height:250px;object-fit:cover;">
+
+                {% endif %}
+
+                <div class="card-body">
+
+                    <h4 class="font-weight-bold">
+
+                        {{ object.product.name }}
+
+                    </h4>
+
+                    <hr>
+
+                    <p>
+                        <strong>👤 Ordered By :</strong>
+                        {{ object.name }}
+                    </p>
+
+                    <p>
+                         <strong>📦 Quantity :</strong>
+                        {{ object.count }}
+                    </p>
+
+                    <p>
+                        <strong>💰 Total Price :</strong>
+
+                        <span class="text-success font-weight-bold">
+
+                            ₹ {{ object.cost }}
+
+                        </span>
+
+                    </p>
+
+                    <p>
+                        <strong>📍 Delivery Address :</strong><br>
+
+                        {{ object.address }}
+
+                    </p>
+
+                    <p>
+                        <strong>📅 Ordered On :</strong>
+
+                        {{ object.created|date:"d M Y, h:i A" }}
+
+                    </p>
+                    
+                    <p>
+
+                        <strong>🚚 Order Status :</strong>
+
+                        {% if object.status == "Pending" %}
+
+                            <span class="badge badge-warning p-2">
+                                  🟡 Pending
+                            </span>
+
+                      {% elif object.status == "Preparing" %}
+
+                             <span class="badge badge-info p-2">
+                                  🟠 Preparing
+                             </span>
+
+                     {% elif object.status == "Out For Delivery" %}
+
+                              <span class="badge badge-primary p-2">
+                                   🔵 Out For Delivery
+                              </span>
+
+                     {% elif object.status == "Delivered" %}
+
+                             <span class="badge badge-success p-2">
+                                  🟢 Delivered
+                             </span>
+
+                      {% endif %}
+
+                    </p>
+                   
+                           
+                       
+
+                    <a href="{{ object.get_absolute_url }}"
+                       class="btn btn-success btn-block">
+
+                        👁 View Order Details
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body text-center p-5">
+
+            <img src="{% static 'images/no-order.png' %}"
+                 width="180">
+
+            <h3 class="mt-4">
+
+                No Orders Yet
+
+            </h3>
+
+            <p class="text-muted">
+
+                Start ordering healthy food today.
+
+            </p>
+
+            <a href="/home/"
+               class="btn btn-success btn-lg">
+
+                🛒 Browse Foods
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

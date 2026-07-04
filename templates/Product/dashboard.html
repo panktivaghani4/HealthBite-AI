@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Welcome Section -->
+    <div class="jumbotron bg-success text-white">
+        <h2>👋 Welcome {{ request.user.username }}</h2>
+
+        {% if health %}
+            <p><b>🎯 Goal:</b> {{ health.goal }}</p>
+            <p><b>🏃 Activity Level:</b> {{ health.activity_level }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Health Cards -->
+    <div class="row">
+
+        <!-- BMI -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h4>⚖ BMI</h4>
+                    <h2>{{ bmi }}</h2>
+                    <p class="text-success">
+                        <b>{{ bmi_status }}</b>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BMR -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h4>🔥 BMR</h4>
+                    <h2>{{ bmr }}</h2>
+                    <small>kcal/day</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Height -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h4>📏 Height</h4>
+                    <h2>{{ health.height }} cm</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weight -->
+        <div class="col-md-3 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h4>⚖ Weight</h4>
+                    <h2>{{ health.weight }} kg</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calories -->
+        <div class="col-md-6 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h4>🍽 Daily Calories</h4>
+                    <h2>{{ calories }}</h2>
+                    <small>kcal/day</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Water Intake -->
+        <div class="col-md-6 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h4>💧 Water Intake</h4>
+                    <h2>{{ water }} L</h2>
+                    <small>Per Day</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AI Recommendation -->
+    <div class="card shadow mt-4">
+
+        <div class="card-body">
+
+            <h3>🤖 AI Health Recommendation</h3>
+
+            {% if health.goal == "Weight Loss" %}
+
+                <ul>
+                    <li>✔ Oats</li>
+                    <li>✔ Brown Rice</li>
+                    <li>✔ Vegetable Salad</li>
+                    <li>✔ Green Tea</li>
+                </ul>
+
+            {% elif health.goal == "Weight Gain" %}
+
+                <ul>
+                    <li>✔ Paneer</li>
+                    <li>✔ Banana Shake</li>
+                    <li>✔ Peanut Butter</li>
+                    <li>✔ Chicken Breast</li>
+                </ul>
+
+            {% else %}
+
+                <ul>
+                    <li>✔ Mixed Diet</li>
+                    <li>✔ Fruits</li>
+                    <li>✔ Milk</li>
+                    <li>✔ Dry Fruits</li>
+                </ul>
+
+            {% endif %}
+
+            <hr>
+
+            <p class="text-success">
+                <b>💡 HealthBite AI Suggestion:</b><br>
+                Follow your recommended diet regularly, stay hydrated, and maintain your daily calorie target for better health.
+            </p>
+
+        </div>
+
+    </div>
+
+    <br>
+    <hr>
+
+<h3 class="mb-4">
+    🥗 Recommended For You
+</h3>
+
+<div class="row">
+
+    {% for food in recommended_foods %}
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow h-100">
+
+            {% if food.image %}
+
+                <img src="{{ food.image.url }}"
+                     class="card-img-top"
+                     style="height:220px;object-fit:cover;">
+
+            {% else %}
+
+                {% load static %}
+
+                <img src="{% static 'images/no-image.png' %}"
+                     class="card-img-top"
+                     style="height:220px;object-fit:cover;">
+
+            {% endif %}
+
+            <div class="card-body">
+
+                <h5 class="font-weight-bold">
+
+                    {{ food.name }}
+
+                </h5>
+
+                <p class="text-muted">
+
+                    {{ food.description|truncatewords:12 }}
+
+                </p>
+
+                <table class="table table-sm">
+
+                    <tr>
+
+                        <td>🔥 Calories</td>
+
+                        <td>{{ food.calories }}</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>🥩 Protein</td>
+
+                        <td>{{ food.protein }} g</td>
+
+                    </tr>
+
+                </table>
+
+                <h5 class="text-success">
+
+                    ₹ {{ food.price }}
+
+                </h5>
+
+                <a href="{% url 'Product_product_detail' food.slug %}"
+                   class="btn btn-success btn-block">
+
+                    View Food
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="col-12">
+
+        <div class="alert alert-warning">
+
+            No recommended foods available.
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+    <hr class="mt-5">
+
+<h3 class="mb-4">
+    📦 Recent Orders
+</h3>
+
+{% if recent_orders %}
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="thead-success">
+
+                <tr>
+
+                    <th>Product</th>
+
+                    <th>Quantity</th>
+
+                    <th>Total</th>
+
+                    <th>Status</th>
+
+                    <th>Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for order in recent_orders %}
+
+                <tr>
+
+                    <td>{{ order.product.name }}</td>
+
+                    <td>{{ order.count }}</td>
+
+                    <td>₹ {{ order.cost }}</td>
+
+                    <td>
+
+                        {% if order.status == "Pending" %}
+
+                            <span class="badge badge-warning">
+                                🟡 Pending
+                            </span>
+
+                        {% elif order.status == "Preparing" %}
+
+                            <span class="badge badge-info">
+                                🟠 Preparing
+                            </span>
+
+                        {% elif order.status == "Out For Delivery" %}
+
+                            <span class="badge badge-primary">
+                                🔵 Out For Delivery
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge badge-success">
+                                🟢 Delivered
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ order.created|date:"d M Y" }}</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <div class="text-right">
+
+            <a href="{% url 'Product_order_list' %}"
+               class="btn btn-success">
+
+                View All Orders →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    You haven't placed any orders yet.
+
+</div>
+
+{% endif %}
+
+    <!-- Explore Foods Button -->
+    <div class="text-center">
+
+        <a href="/home/" class="btn btn-success btn-lg">
+            🍽 Explore Healthy Foods
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

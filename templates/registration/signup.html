@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+
+        <div class="col-12 text-center mb-4">
+            <h1>HealthBite</h1>
+            <h5>Smart Food Ordering & Health Recommendation System</h5>
+        </div>
+
+        <div class="col-md-6 offset-md-3">
+
+            <div class="card p-4 shadow">
+
+                <h3 class="text-center mb-4">
+                    Create Your HealthBite Account
+                </h3>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    {{ form|crispy }}
+
+                    <button type="submit"
+                            class="btn btn-primary btn-lg btn-block mt-3">
+                        Sign Up
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+
+                    <p>
+                        Already have an account?
+                        <a href="/accounts/login/">
+                            Login Here
+                        </a>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
