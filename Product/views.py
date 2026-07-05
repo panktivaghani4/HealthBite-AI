@@ -31,6 +31,26 @@ class ProductListView(ListView):
                 food_type=food_type
             )
 
+            # Sort Products
+
+            sort_by = self.request.GET.get("sort_by")
+
+            if sort_by == "low_calories":
+
+                queryset = queryset.order_by("calories")
+
+            elif sort_by == "high_protein":
+
+                queryset = queryset.order_by("-protein")
+
+            elif sort_by == "low_price":
+
+                queryset = queryset.order_by("price")
+
+            elif sort_by == "high_price":
+
+                queryset = queryset.order_by("-price")
+
         # AI Recommendation Order
         if self.request.user.is_authenticated:
 
@@ -198,6 +218,38 @@ def dashboard(request):
         ).order_by("-protein")[:6]
 
         # ==========================
+        # Dashboard Analytics   
+        # ==========================
+
+        orders = Order.objects.filter(
+            order_by=request.user
+        )
+
+        total_orders = orders.count()
+
+        total_spent = sum(
+            order.cost for order in orders
+        )
+
+        recent_order = orders.order_by("-created").first()
+
+        favorite_category = ""
+
+        if orders.exists():
+
+            categories = {}
+
+        for order in orders:
+
+            category = order.product.category
+
+            categories[category] = categories.get(category, 0) + 1
+
+        favorite_category = max(
+            categories,
+            key=categories.get
+    )
+        # ==========================
         # Recent Orders
         # ==========================
 
@@ -213,6 +265,10 @@ def dashboard(request):
         water = 0
         bmi_status = ""
         recommended_foods = Product.objects.none()
+        total_orders = 0
+        total_spent = 0
+        recent_order = None
+        favorite_category = ""
 
     context = {
         "health": health,
@@ -223,6 +279,11 @@ def dashboard(request):
         "bmi_status": bmi_status,
         "recommended_foods": recommended_foods,
         "recent_orders": recent_orders,
+
+        "total_orders": total_orders,
+        "total_spent": total_spent,
+        "recent_order": recent_order,
+        "favorite_category": favorite_category,
     }
 
     return render(request, "Product/dashboard.html", context)

@@ -341,6 +341,204 @@
 
 {% endif %}
 
+        <hr class="my-5">
+
+<h3 class="mb-4">
+
+    📊 My Dashboard Analytics
+
+</h3>
+
+<div class="row">
+
+    <!-- Total Orders -->
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card shadow text-center border-0">
+
+            <div class="card-body">
+
+                <h2>📦</h2>
+
+                <h3>{{ total_orders }}</h3>
+
+                <p class="mb-0">
+
+                    Total Orders
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Total Spent -->
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card shadow text-center border-0">
+
+            <div class="card-body">
+
+                <h2>💰</h2>
+
+                <h3>₹ {{ total_spent }}</h3>
+
+                <p class="mb-0">
+
+                    Total Spent
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Favorite Category -->
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card shadow text-center border-0">
+
+            <div class="card-body">
+
+                <h2>🍽</h2>
+
+                <h5>
+
+                    {{ favorite_category|default:"N/A" }}
+
+                </h5>
+
+                <p class="mb-0">
+
+                    Favorite Category
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Recent Order -->
+
+    <div class="col-md-3 mb-3">
+
+        <div class="card shadow text-center border-0">
+
+            <div class="card-body">
+
+                <h2>🛒</h2>
+
+                {% if recent_order %}
+
+                    <h6>
+
+                        {{ recent_order.product.name }}
+
+                    </h6>
+
+                    <small>
+
+                        ₹ {{ recent_order.cost }}
+
+                    </small>
+
+                {% else %}
+
+                    <h6>
+
+                        No Orders
+
+                    </h6>
+
+                {% endif %}
+
+                <p class="mb-0">
+
+                    Recent Order
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <hr class="my-5">
+
+<div class="card shadow-lg border-0 mb-4">
+
+    <div class="card-header bg-info text-white">
+
+        <h4 class="mb-0">
+
+            💡 Today's Health Tip
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if health.goal == "Weight Loss" %}
+
+            <ul class="mb-0">
+
+                <li>🥗 Eat more vegetables and lean protein.</li>
+
+                <li>🚶 Walk at least 30 minutes daily.</li>
+
+                <li>💧 Drink 2–3 litres of water.</li>
+
+                <li>🚫 Avoid sugary drinks and junk food.</li>
+
+            </ul>
+
+        {% elif health.goal == "Weight Gain" %}
+
+            <ul class="mb-0">
+
+                <li>🥜 Eat calorie-rich healthy foods.</li>
+
+                <li>🥛 Drink milk or protein shakes.</li>
+
+                <li>🏋 Strength training regularly.</li>
+
+                <li>🍚 Don't skip your meals.</li>
+
+            </ul>
+
+        {% else %}
+
+            <ul class="mb-0">
+
+                <li>🍎 Eat a balanced diet.</li>
+
+                <li>🏃 Exercise for 30 minutes daily.</li>
+
+                <li>💧 Stay hydrated.</li>
+
+                <li>😴 Sleep 7–8 hours every night.</li>
+
+            </ul>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
     <!-- Explore Foods Button -->
     <div class="text-center">
 
@@ -349,6 +547,31 @@
         </a>
 
     </div>
+
+    <div class="text-center mt-5">
+
+    <a href="/home/"
+       class="btn btn-success btn-lg mr-2">
+
+        🍽 Explore Foods
+
+    </a>
+
+    <a href="/orders/"
+       class="btn btn-primary btn-lg mr-2">
+
+        📦 My Orders
+
+    </a>
+
+    <a href="/accounts/profile/"
+       class="btn btn-warning btn-lg">
+
+        👤 My Profile
+
+    </a>
+
+</div>
 
 </div>
 

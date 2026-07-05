@@ -30,6 +30,23 @@ class SearchForm(forms.Form):
         )
     )
 
+    sort_by = forms.ChoiceField(
+    required=False,
+    label='',
+    choices=[
+        ('', 'Sort By'),
+        ('low_calories', '🔥 Low Calories'),
+        ('high_protein', '🥩 High Protein'),
+        ('low_price', '💰 Lowest Price'),
+        ('high_price', '💎 Highest Price'),
+    ],
+    widget=forms.Select(
+        attrs={
+            'class': 'form-control'
+        }
+    )
+)
+
 
 class OrderForm(forms.ModelForm):
 
