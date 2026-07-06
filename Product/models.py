@@ -5,6 +5,10 @@ from django_currentuser.db.models import CurrentUserField
 from django_extensions.db import fields as extension_fields
 
 
+# ==========================================
+# Product Model
+# ==========================================
+
 class Product(models.Model):
 
     # Basic Fields
@@ -24,7 +28,7 @@ class Product(models.Model):
     carbs = models.FloatField(default=0)
     fat = models.FloatField(default=0)
 
-    # Health Recommendation Category
+    # Health Recommendation
     food_type = models.CharField(
         max_length=20,
         choices=[
@@ -54,11 +58,12 @@ class Product(models.Model):
         return reverse('Product_product_update', args=(self.slug,))
 
 
+# ==========================================
+# Order Model
+# ==========================================
+
 class Order(models.Model):
 
-    # ==========================
-    # Order Status Choices
-    # ==========================
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
         ('Preparing', 'Preparing'),
@@ -69,6 +74,7 @@ class Order(models.Model):
     name = models.CharField(max_length=255)
     contact = models.CharField(max_length=10, null=True, blank=True)
     slug = extension_fields.AutoSlugField(populate_from='name', blank=True)
+
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_updated = models.DateTimeField(auto_now=True, editable=False)
 
@@ -76,11 +82,10 @@ class Order(models.Model):
     count = models.IntegerField(default=1)
     cost = models.IntegerField(default=0)
 
-    # NEW FIELD
     status = models.CharField(
         max_length=30,
         choices=STATUS_CHOICES,
-        default='Pending'
+        default="Pending"
     )
 
     delivered = models.BooleanField(default=False)
@@ -116,13 +121,57 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
 
         if self.status == "Delivered":
+
             self.delivered = True
 
             if not self.delivered_on:
                 self.delivered_on = timezone.now()
 
         else:
+
             self.delivered = False
             self.delivered_on = None
 
         super(Order, self).save(*args, **kwargs)
+
+
+# ==========================================
+# Review Model
+# ==========================================
+
+class Review(models.Model):
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+
+    user = models.ForeignKey(
+        "auth.User",
+        on_delete=models.CASCADE
+    )
+
+    RATING_CHOICES = [
+        (1, "⭐"),
+        (2, "⭐⭐"),
+        (3, "⭐⭐⭐"),
+        (4, "⭐⭐⭐⭐"),
+        (5, "⭐⭐⭐⭐⭐"),
+    ]
+
+    rating = models.IntegerField(
+        choices=RATING_CHOICES
+    )
+
+    comment = models.TextField()
+
+    created = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ("-created",)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}"

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Order
+from .models import Order, Review
+
 
 
 class SearchForm(forms.Form):
@@ -77,3 +78,29 @@ class OrderForm(forms.ModelForm):
             'contact',
             'address',
         ]
+    class ReviewForm(forms.ModelForm):
+
+      class Meta:
+        model = Review
+
+        fields = [
+            "rating",
+            "comment",
+        ]
+
+        widgets = {
+
+            "rating": forms.Select(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+            "comment": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "rows": 4,
+                    "placeholder": "Write your review..."
+                }
+            ),
+        }

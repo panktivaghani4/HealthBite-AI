@@ -1,6 +1,6 @@
 from django.views.generic import DetailView, ListView, CreateView
-from .models import Product, Order
-from .forms import OrderForm, SearchForm
+from .models import Product, Order, Review
+from .forms import OrderForm, SearchForm, ReviewForm
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -151,7 +151,39 @@ class OrderDetailView(DetailView):
 
 def order_conform(request):
     return render(request, "Product/thanks.html")
+from django.shortcuts import redirect
 
+
+@login_required
+def add_review(request, slug):
+
+    product = get_object_or_404(
+        Product,
+        slug=slug
+    )
+
+    if request.method == "POST":
+
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+
+            review = form.save(commit=False)
+
+            review.product = product
+            review.user = request.user
+
+            review.save()
+
+            return redirect(
+                "Product_product_detail",
+                slug=product.slug
+            )
+
+    return redirect(
+        "Product_product_detail",
+        slug=product.slug
+    )
 
 # -------------------- DASHBOARD --------------------
 
