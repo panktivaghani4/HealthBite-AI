@@ -78,9 +78,11 @@ class OrderForm(forms.ModelForm):
             'contact',
             'address',
         ]
-    class ReviewForm(forms.ModelForm):
 
-      class Meta:
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
         model = Review
 
         fields = [
