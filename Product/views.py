@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from accounts.models import UserHealth
+from django.db.models import Avg
+
 
 # -------------------- PRODUCT --------------------
 
@@ -114,6 +116,18 @@ class ProductDetailView(DetailView):
             product=self.object
         )
 
+        average_rating = Review.objects.filter(
+            product=self.object
+        ).aggregate(
+            Avg("rating")
+        )
+
+        context["average_rating"] = average_rating["rating__avg"]
+
+        context["review_count"] = Review.objects.filter(
+            product=self.object
+        ).count()
+        
         if self.request.user.is_authenticated:
             context["review_form"] = ReviewForm()
 

@@ -1,25 +1,170 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
 
-<div class="container">
+<div class="container mt-5">
+
     <div class="row">
-        <div class="col-md-6">
 
-            <img src="{{object.image.url}}" class="card-img-top" alt="...">
+        <!-- Product Image -->
+        <div class="col-md-5">
+
+            {% if object.image %}
+
+                <img src="{{ object.image.url }}"
+                     class="img-fluid rounded shadow">
+
+            {% else %}
+
+                <img src="{% static 'images/no-image.png' %}"
+                     class="img-fluid rounded shadow">
+
+            {% endif %}
+
         </div>
-        <div class="col-md-6">
-            <div class="card">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><b>Product : {{object.name}}</b></li>
-                <li class="list-group-item"><b> Description </b> {{object.description}}</li>
-                <li class="list-group-item"><b> Price </b> {{object.price}}/-</li>
-                  <li class="list-group-item"><a href="{% url 'Product_order_create' object.slug %}" class="btn btn-primary">Buy Now</a></li>
-              </ul>
-            </div>
+
+        <!-- Product Details -->
+        <div class="col-md-7">
+
+            <h2>{{ object.name }}</h2>
+
+            <hr>
+
+            <p>{{ object.description }}</p>
+
+            <h3 class="text-success">
+                ₹ {{ object.price }}
+            </h3>
+
+            <table class="table">
+
+                <tr>
+                    <th>🔥 Calories</th>
+                    <td>{{ object.calories }}</td>
+                </tr>
+
+                <tr>
+                    <th>🥩 Protein</th>
+                    <td>{{ object.protein }} g</td>
+                </tr>
+
+                <tr>
+                    <th>🍚 Carbs</th>
+                    <td>{{ object.carbs }} g</td>
+                </tr>
+
+                <tr>
+                    <th>🥑 Fat</th>
+                    <td>{{ object.fat }} g</td>
+                </tr>
+
+            </table>
+
+            <a href="{% url 'Product_order_create' object.slug %}"
+               class="btn btn-success btn-lg">
+
+                🛒 Order Now
+
+            </a>
+
         </div>
+
     </div>
-</div>
 
+    <hr class="my-5">
+
+    <!-- Review Form -->
+
+    {% if user.is_authenticated %}
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-success text-white">
+
+            <h4 class="mb-0">
+                ⭐ Write a Review
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST"
+                  action="{% url 'Product_add_review' object.slug %}">
+
+                {% csrf_token %}
+
+                {{ review_form.as_p }}
+
+                <button type="submit"
+                        class="btn btn-success">
+
+                    Submit Review
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- Reviews -->
+
+    <h3 class="mb-4">
+
+        ⭐ Customer Reviews
+
+    </h3>
+
+    {% for review in reviews %}
+
+    <div class="card shadow-sm mb-3">
+
+        <div class="card-body">
+
+            <h5>
+
+                {{ review.user.username }}
+
+            </h5>
+
+            <p>
+
+                Rating :
+                ⭐ {{ review.rating }}/5
+
+            </p>
+
+            <p>
+
+                {{ review.comment }}
+
+            </p>
+
+            <small class="text-muted">
+
+                {{ review.created|date:"d M Y h:i A" }}
+
+            </small>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="alert alert-info">
+
+        No reviews yet.
+
+    </div>
+
+    {% endfor %}
+
+</div>
 
 {% endblock %}
