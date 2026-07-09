@@ -129,7 +129,16 @@ class ProductDetailView(DetailView):
         ).count()
         
         if self.request.user.is_authenticated:
-            context["review_form"] = ReviewForm()
+
+             existing_review = Review.objects.filter(
+                  product=self.object,
+                  user=self.request.user
+        ).first()
+
+        context["existing_review"] = existing_review
+
+        if not existing_review:
+                context["review_form"] = ReviewForm()
 
         return context
     
@@ -192,6 +201,17 @@ def add_review(request, slug):
     )
 
     if request.method == "POST":
+        
+        existing_review = Review.objects.filter(
+            product=product,
+            user=request.user
+        ).first()
+
+        if existing_review:
+            return redirect(
+                 "Product_product_detail",
+                slug=product.slug
+        )
 
         form = ReviewForm(request.POST)
 
@@ -298,18 +318,20 @@ def dashboard(request):
 
         if orders.exists():
 
-            categories = {}
+             categories = {}
 
-        for order in orders:
+             for order in orders:
 
-            category = order.product.category
+                category = order.product.category
 
-            categories[category] = categories.get(category, 0) + 1
+                categories[category] = categories.get(category, 0) + 1
 
-        favorite_category = max(
-            categories,
-            key=categories.get
+                favorite_category = max(
+                 categories,
+                key=categories.get
     )
+
+    
         # ==========================
         # Recent Orders
         # ==========================
@@ -345,6 +367,7 @@ def dashboard(request):
         "total_spent": total_spent,
         "recent_order": recent_order,
         "favorite_category": favorite_category,
+
     }
 
     return render(request, "Product/dashboard.html", context)

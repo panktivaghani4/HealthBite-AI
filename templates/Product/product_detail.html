@@ -77,6 +77,20 @@
     <!-- Review Form -->
 
     {% if user.is_authenticated %}
+    {% if existing_review %}
+
+    <div class="alert alert-success">
+        
+
+    ✅ You have already reviewed this product.
+
+    <br>
+
+    Thank you for your valuable feedback!
+
+</div>
+
+{% else %}
 
     <div class="card shadow mb-4">
 
@@ -112,6 +126,26 @@
 
     {% endif %}
 
+    <div class="card shadow mb-4">
+
+    <div class="card-body text-center">
+
+        <h2 class="text-warning">
+
+            ⭐ {{ average_rating|default:"0"|floatformat:0 }}/5
+
+        </h2>
+
+        <h5 class="text-muted">
+
+            Based on {{ review_count }} Reviews
+
+        </h5>
+
+    </div>
+
+    </div>
+
     <!-- Reviews -->
 
     <h3 class="mb-4">
@@ -126,30 +160,82 @@
 
         <div class="card-body">
 
-            <h5>
+            <div class="d-flex align-items-center mb-3">
 
-                {{ review.user.username }}
+    <div class="rounded-circle bg-success text-white d-flex justify-content-center align-items-center"
+         style="width:55px;
+                height:55px;
+                font-size:22px;
+                font-weight:bold;">
 
-            </h5>
+        {{ review.user.username|first|upper }}
 
-            <p>
+    </div>
 
-                Rating :
-                ⭐ {{ review.rating }}/5
+    <div class="ml-3">
+
+        <h5 class="mb-1 font-weight-bold">
+
+            {{ review.user.username }}
+
+            <span class="badge badge-success ml-2">
+
+                ✔ Verified Buyer
+
+            </span>
+
+        </h5>
+
+       
+
+    </div>
+
+</div>
+           
+
+   
+
+    
+
+                <p>
+
+                    <strong>Rating :</strong>
+
+                    {% if review.rating == 5 %}
+
+                        ⭐⭐⭐⭐⭐
+
+                    {% elif review.rating == 4 %}
+
+                        ⭐⭐⭐⭐☆
+
+                    {% elif review.rating == 3 %}
+
+                        ⭐⭐⭐☆☆
+
+                    {% elif review.rating == 2 %}
+
+                        ⭐⭐☆☆☆
+
+                    {% else %}
+
+                        ⭐☆☆☆☆
+
+                    {% endif %}
+
+                </p>
+
+                <p class="text-secondary">
+
+                    "{{ review.comment }}"
+
+                </p>
+
+           <p class="text-muted mb-0">
+
+    🗓           {{ review.created|date:"d M Y, h:i A" }}
 
             </p>
-
-            <p>
-
-                {{ review.comment }}
-
-            </p>
-
-            <small class="text-muted">
-
-                {{ review.created|date:"d M Y h:i A" }}
-
-            </small>
 
         </div>
 
