@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from accounts.models import UserHealth
 from django.db.models import Avg
+from django.db.models import Count
 
 
 # -------------------- PRODUCT --------------------
@@ -81,6 +82,12 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
+        # Best Seller Products
+        best_sellers = Product.objects.annotate(
+        total_orders=Count("orders")
+    ).order_by("-total_orders")[:3]
+
+        context["best_sellers"] = best_sellers
 
         context["search_form"] = SearchForm(
             self.request.GET

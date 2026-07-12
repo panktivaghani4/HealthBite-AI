@@ -123,6 +123,21 @@
 
         {% endif %}
 
+        {% if object in best_sellers %}
+
+    <span class="badge badge-warning"
+          style="position:absolute;
+                 top:45px;
+                 left:10px;
+                 font-size:12px;
+                 padding:8px 12px;
+                 border-radius:20px;
+                 color:white;">
+        🏆 Best Seller
+    </span>
+
+    {% endif %}
+
     </div>
 
              

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-warning text-dark">
+
+            <h2>👤 My Health Profile</h2>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th>Name</th>
+                    <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Username</th>
+                    <td>{{ request.user.username }}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>{{ request.user.email }}</td>
+                </tr>
+
+                <tr>
+                    <th>Mobile</th>
+                    <td>{{ health.mobile }}</td>
+                </tr>
+
+                <tr>
+                    <th>Age</th>
+                    <td>{{ health.age }}</td>
+                </tr>
+
+                <tr>
+                    <th>Gender</th>
+                    <td>{{ health.gender }}</td>
+                </tr>
+
+                <tr>
+                    <th>Height</th>
+                    <td>{{ health.height }} cm</td>
+                </tr>
+
+                <tr>
+                    <th>Weight</th>
+                    <td>{{ health.weight }} kg</td>
+                </tr>
+
+                <tr>
+                    <th>Goal</th>
+                    <td>{{ health.goal }}</td>
+                </tr>
+
+                <tr>
+                    <th>Activity Level</th>
+                    <td>{{ health.activity_level }}</td>
+                </tr>
+
+                <tr class="table-success">
+                    <th>BMI</th>
+                    <td>{{ bmi }}</td>
+                </tr>
+
+                <tr class="table-info">
+                    <th>BMI Status</th>
+                    <td>{{ bmi_status }}</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
