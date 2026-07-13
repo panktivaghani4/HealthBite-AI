@@ -57,5 +57,11 @@ class UserHealth(models.Model):
         default='Moderate'
     )
 
+    profile_image = models.ImageField(
+    upload_to="profile_images/",
+    default="profile_images/default.png",
+    blank=True
+    )
+
     def __str__(self):
         return self.user.username

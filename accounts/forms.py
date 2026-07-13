@@ -45,3 +45,67 @@ class SignUpForm(UserCreationForm):
             'password1',
             'password2'
         )
+    # ======================================
+# Edit Profile Form
+# ======================================
+
+class UserHealthForm(forms.ModelForm):
+
+    class Meta:
+        model = UserHealth
+
+        fields = [
+            "mobile",
+            "age",
+            "gender",
+            "height",
+            "weight",
+            "goal",
+            "activity_level",
+        ]
+
+        widgets = {
+
+            "mobile": forms.TextInput(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+            "age": forms.NumberInput(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+            "gender": forms.Select(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+            "height": forms.NumberInput(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+            "weight": forms.NumberInput(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+            "goal": forms.Select(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+            "activity_level": forms.Select(
+                attrs={
+                    "class": "form-control"
+                }
+            ),
+
+        }

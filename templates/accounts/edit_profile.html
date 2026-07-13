@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h2>✏ Edit Health Profile</h2>
+            <p class="mb-0">Update your HealthBite information</p>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <h4 class="mb-3">👤 Personal Information</h4>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Mobile</label>
+
+                        {{ form.mobile }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Age</label>
+
+                        {{ form.age }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Gender</label>
+
+                        {{ form.gender }}
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h4 class="mb-3">📏 Body Measurements</h4>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Height (cm)</label>
+
+                        {{ form.height }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Weight (kg)</label>
+
+                        {{ form.weight }}
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <h4 class="mb-3">🎯 Goal & Activity</h4>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Goal</label>
+
+                        {{ form.goal }}
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Activity Level</label>
+
+                        {{ form.activity_level }}
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="alert alert-info">
+
+                    <strong>ℹ Note:</strong>
+                    Updating these details will improve AI food recommendations and dashboard calculations.
+
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg">
+
+                    💾 Save Changes
+
+                </button>
+
+                <a href="{% url 'profile' %}" class="btn btn-secondary btn-lg">
+
+                    🔙 Back to Profile
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

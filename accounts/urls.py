@@ -8,4 +8,11 @@ urlpatterns = [
     # My Profile
     # ==========================
     path('profile/', views.profile, name='profile'),
+
+    # Edit Profile
+    path(
+        'profile/edit/',
+        views.edit_profile,
+        name='edit_profile'
+    ),
 ]

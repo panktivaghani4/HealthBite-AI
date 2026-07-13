@@ -1,9 +1,9 @@
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from .forms import SignUpForm
+from .forms import SignUpForm, UserHealthForm
 from .models import UserHealth
 
 
@@ -69,4 +69,42 @@ def profile(request):
         request,
         "accounts/profile.html",
         context
+    )
+
+    # ======================================
+# Edit Profile
+# ======================================
+
+@login_required
+def edit_profile(request):
+
+    health = UserHealth.objects.get(
+        user=request.user
+    )
+
+    if request.method == "POST":
+
+        form = UserHealthForm(
+            request.POST,
+            instance=health
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect("profile")
+
+    else:
+
+        form = UserHealthForm(
+            instance=health
+        )
+
+    return render(
+        request,
+        "accounts/edit_profile.html",
+        {
+            "form": form
+        }
     )
