@@ -55,6 +55,7 @@ class UserHealthForm(forms.ModelForm):
         model = UserHealth
 
         fields = [
+            "profile_image",
             "mobile",
             "age",
             "gender",
@@ -65,6 +66,12 @@ class UserHealthForm(forms.ModelForm):
         ]
 
         widgets = {
+
+             "profile_image": forms.FileInput(
+                 attrs={
+            "class": "form-control"
+                }
+            ),
 
             "mobile": forms.TextInput(
                 attrs={

@@ -86,6 +86,7 @@ def edit_profile(request):
 
         form = UserHealthForm(
             request.POST,
+            request.FILES,
             instance=health
         )
 
@@ -105,6 +106,7 @@ def edit_profile(request):
         request,
         "accounts/edit_profile.html",
         {
-            "form": form
+            "form": form,
+            "health": health,
         }
     )

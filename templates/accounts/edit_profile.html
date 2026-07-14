@@ -15,9 +15,35 @@
 
         <div class="card-body">
 
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data"></form>
 
                 {% csrf_token %}
+
+                <div class="text-center mb-4">
+
+    {% if health.profile_image %}
+
+        <img src="{{ health.profile_image.url }}"
+             class="rounded-circle shadow"
+             width="170"
+             height="170"
+             style="object-fit:cover;">
+
+    {% endif %}
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-12 mb-4">
+
+        <label><strong>📷 Profile Picture</strong></label>
+
+        {{ form.profile_image }}
+
+    </div>
+
+</div>
 
                 <h4 class="mb-3">👤 Personal Information</h4>
 
