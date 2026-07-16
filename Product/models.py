@@ -40,7 +40,7 @@ class Product(models.Model):
     )
 
     image = models.ImageField(
-        upload_to="media/Product-images/",
+        upload_to="Product-images/",
         null=True,
         blank=True
     )
